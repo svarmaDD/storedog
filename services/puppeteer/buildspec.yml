@@ -23,6 +23,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image for $ECR_REPOSITORY_NAME...
+      - cd services/puppeteer
       # The Dockerfile is expected to be in the current directory (e.g., services/frontend)
       - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
       # Optional: Tag with commit hash as well
