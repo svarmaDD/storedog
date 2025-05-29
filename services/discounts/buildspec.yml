@@ -24,7 +24,7 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image for $ECR_REPOSITORY_NAME...
       # The Dockerfile is expected to be in the current directory (e.g., services/frontend)
-      - cd services/frontend
+      - cd services/discounts
       - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
       # Optional: Tag with commit hash as well
       # - if [ -n "$CODEBUILD_RESOLVED_SOURCE_VERSION" ]; then docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7); fi
