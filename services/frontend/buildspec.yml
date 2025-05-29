@@ -1,0 +1,45 @@
+version: 0.2
+
+# Environment variables that CodeBuild will use.
+# You can also define these in the CodeBuild project settings.
+env:
+  variables:
+    AWS_ACCOUNT_ID: "601427279990" # Replace with your AWS Account ID
+    AWS_REGION: "ap-southeast-2"         # Replace with your AWS Region (e.g., us-east-1)
+    ECR_REPOSITORY_NAME: "storedog/frontend" # The ECR repository name for this service
+    IMAGE_TAG: "latest"                   # You can use 'latest' or be more dynamic
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      # The AWS CLI is pre-installed in CodeBuild's managed environments
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY_NAME
+      # You can generate a more dynamic tag, e.g., based on commit hash:
+      # - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image for $ECR_REPOSITORY_NAME...
+      # The Dockerfile is expected to be in the current directory (e.g., services/frontend)
+      - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+      # Optional: Tag with commit hash as well
+      # - if [ -n "$CODEBUILD_RESOLVED_SOURCE_VERSION" ]; then docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7); fi
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image to $REPOSITORY_URI...
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      # Optional: Push the commit hash tag if you created one
+      # - if [ -n "$CODEBUILD_RESOLVED_SOURCE_VERSION" ]; then docker push $REPOSITORY_URI:$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7); fi
+      - echo "Image pushed successfully."
+      # Optional: Create an imagedefinitions.json file for ECS deployments with CodePipeline
+      - printf '[{"name":"%s-container","imageUri":"%s"}]' "$ECR_REPOSITORY_NAME" "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json
+
+# Optional: If you're using CodePipeline to deploy to ECS, you'd define artifacts
+artifacts:
+  files:
+    - imagedefinitions.json # This file should be relative to this buildspec.yml
