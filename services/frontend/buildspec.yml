@@ -23,6 +23,11 @@ phases:
     commands:
       - echo "shyamaBuild started on `date`"
       - echo "Building the Docker image for $ECR_REPOSITORY_NAME..."
+      - echo "--- START OF BUILD PHASE ---"
+      - echo "Current working directory (should be services/frontend if buildspec path is correct):"
+      - pwd  # PRINT WORKING DIRECTORY
+      - echo "Listing all files in current working directory (check for Dockerfile here):"
+      - ls -la # LIST FILES (DETAILED)
       # The Dockerfile is expected to be in the current directory (e.g., services/frontend)
       - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
       # Optional: Tag with commit hash as well
