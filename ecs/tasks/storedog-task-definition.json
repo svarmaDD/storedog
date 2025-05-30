@@ -1,5 +1,4 @@
 {
-  "taskDefinitionArn": "<secret>",
   "networkMode": "bridge",
   "containerDefinitions": [
     {
@@ -509,7 +508,6 @@
   ],
   "family": "storedog",
   "networkMode": "bridge",
-  "revision": 55,
   "volumes": [
     {
       "name": "docker_sock",
@@ -530,36 +528,12 @@
       }
     }
   ],
-  "status": "ACTIVE",
-  "requiresAttributes": [
-    {
-      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
-    },
-    {
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.24"
-    },
-    {
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
-    },
-    {
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
-    },
-    {
-      "name": "ecs.capability.container-health-check"
-    },
-    {
-      "name": "ecs.capability.container-ordering"
-    },
-    {
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
-    }
-  ],
+ 
+  "executionRoleArn": "ecsTaskExecutionRole"
+  "family": "storedog-app-task",
   "placementConstraints": [],
-  "compatibilities": ["EC2"],
   "requiresCompatibilities": ["EC2"],
   "cpu": "3072",
   "memory": "10240",
-  "registeredAt": "2024-05-13T20:31:03.380Z",
-  "registeredBy": "",
   "tags": []
 }
