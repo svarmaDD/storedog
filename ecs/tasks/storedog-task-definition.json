@@ -1,127 +1,207 @@
 {
-  "family": "storedog-app-task", 
-  "networkMode": "bridge",
-  "executionRoleArn": "arn:aws:iam::601427279990:role/ecsTaskExecutionRole", 
-  "requiresCompatibilities": ["EC2"],
-  "cpu": "3072",                 
-  "memory": "10240",               
-  "containerDefinitions": [
-  
-    {
-      "name": "postgres",
-      "image": "601427279990.dkr.ecr.ap-southeast-2.amazonaws.com/storedog/postgres",
-      "cpu": 512,
-      "memory": 1024,
-      "memoryReservation": 512,
-      "portMappings": [
+    "family": "storedog-app-task",
+    "networkMode": "bridge",
+    "executionRoleArn": "arn:aws:iam::601427279990:role/ecsTaskExecutionRole",
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "cpu": "3072",
+    "memory": "10240",
+    "containerDefinitions": [
         {
-          "name": "postgres-5432-tcp",
-          "containerPort": 5432,
-          "hostPort": 5432,
-          "protocol": "tcp",
-          "appProtocol": "none" 
-        }
-      ],
-      "essential": true,
-      "environment": [
-        {"name": "POSTGRES_USER", "value": "postgres"},
-        {"name": "POSTGRES_HOST_AUTH_METHOD", "value": "trust"},
-        {"name": "DD_AGENT_HOST", "value": "dd-agent"},
-        {"name": "DD_VERSION", "value": "7"},
-        {"name": "DD_RUNTIME_METRICS_ENABLED", "value": "true"},
-        {"name": "DD_SERVICE", "value": "storedog-db"},
-        {"name": "DD_LOGS_INJECTION", "value": "true"},
-        {"name": "POSTGRES_PASSWORD", "value": "TYtSlJapmfN72hokCP6e"}, 
-        {"name": "DD_ENV", "value": "dev"},
-        {"name": "DD_PROFILING_ENABLED", "value": "true"},
-        {"name": "DD_DBM_PROPAGATION_MODE", "value": "full"}
-      ]
-      "mountPoints": [],
-      "volumesFrom": [],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-create-group": "true",
-          "awslogs-group": "/ecs/storedog",
-          "awslogs-region": "ap-southeast-2",
-          "awslogs-stream-prefix": "ecs"
-        }
-     
-      },
-      "healthCheck": {
-        "command": ["CMD-SHELL", "echo \"healthy\""], 
-        "interval": 60,
-        "timeout": 10,
-        "retries": 3
-      }
-
-    },
-
-    {
-      "name": "redis",
-      "image": "redis:6.2-alpine",
-      "cpu": 512,
-      "memory": 1024,
-      "memoryReservation": 512,
-      "portMappings": [], 
-      "essential": false, 
-      "environment": [],
-      "mountPoints": [],
-      "volumesFrom": [],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-create-group": "true",
-          "awslogs-group": "/ecs/storedog",
-          "awslogs-region": "ap-southeast-2",
-          "awslogs-stream-prefix": "ecs"
-        }
-      }
-    },
- 
-    {
-      "name": "backend",
-      "image": "601427279990.dkr.ecr.ap-southeast-2.amazonaws.com/storedog/backend",
-      "cpu": 512,
-      "memory": 1024,
-      "memoryReservation": 512,
-      "links": ["postgres:postgres", "redis:redis"], 
-      "portMappings": [
+            "name": "postgres",
+            "image": "601427279990.dkr.ecr.ap-southeast-2.amazonaws.com/storedog/postgres",
+            "cpu": 512,
+            "memory": 1024,
+            "memoryReservation": 512,
+            "portMappings": [
+                {
+                    "name": "postgres-5432-tcp",
+                    "containerPort": 5432,
+                    "hostPort": 5432,
+                    "protocol": "tcp",
+                    "appProtocol": "none"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "POSTGRES_USER",
+                    "value": "postgres"
+                },
+                {
+                    "name": "POSTGRES_HOST_AUTH_METHOD",
+                    "value": "trust"
+                },
+                {
+                    "name": "DD_AGENT_HOST",
+                    "value": "dd-agent"
+                },
+                {
+                    "name": "DD_VERSION",
+                    "value": "7"
+                },
+                {
+                    "name": "DD_RUNTIME_METRICS_ENABLED",
+                    "value": "true"
+                },
+                {
+                    "name": "DD_SERVICE",
+                    "value": "storedog-db"
+                },
+                {
+                    "name": "DD_LOGS_INJECTION",
+                    "value": "true"
+                },
+                {
+                    "name": "POSTGRES_PASSWORD",
+                    "value": "TYtSlJapmfN72hokCP6e"
+                },
+                {
+                    "name": "DD_ENV",
+                    "value": "dev"
+                },
+                {
+                    "name": "DD_PROFILING_ENABLED",
+                    "value": "true"
+                },
+                {
+                    "name": "DD_DBM_PROPAGATION_MODE",
+                    "value": "full"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/storedog",
+                    "awslogs-region": "ap-southeast-2",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL",
+                    "echo \"healthy\""
+                ],
+                "interval": 60,
+                "timeout": 10,
+                "retries": 3
+            }
+        },
         {
-          "name": "backend-4000-tcp",
-          "containerPort": 4000,
-          "hostPort": 4000, 
-          "protocol": "tcp",
-          "appProtocol": "none"
+            "name": "redis",
+            "image": "redis:6.2-alpine",
+            "cpu": 512,
+            "memory": 1024,
+            "memoryReservation": 512,
+            "portMappings": [],
+            "essential": false,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/storedog",
+                    "awslogs-region": "ap-southeast-2",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        },
+        {
+            "name": "backend",
+            "image": "601427279990.dkr.ecr.ap-southeast-2.amazonaws.com/storedog/backend",
+            "cpu": 512,
+            "memory": 1024,
+            "memoryReservation": 512,
+            "links": [
+                "postgres:postgres",
+                "redis:redis"
+            ],
+            "portMappings": [
+                {
+                    "name": "backend-4000-tcp",
+                    "containerPort": 4000,
+                    "hostPort": 4000,
+                    "protocol": "tcp",
+                    "appProtocol": "none"
+                }
+            ],
+            "essential": true,
+            "command": [
+                "wait-for-it",
+                "postgres:5432",
+                "--",
+                "bundle",
+                "exec",
+                "rails",
+                "s",
+                "-b",
+                "0.0.0.0",
+                "-p",
+                "4000"
+            ],
+            "environment": [
+                {
+                    "name": "POSTGRES_USER",
+                    "value": "postgres"
+                },
+                {
+                    "name": "POSTGRES_PASSWORD",
+                    "value": "TYtSlJapmfN72hokCP6e"
+                },
+                {
+                    "name": "RAILS_ENV",
+                    "value": "development"
+                },
+                {
+                    "name": "DB_HOST",
+                    "value": "postgres"
+                },
+                {
+                    "name": "REDIS_URL",
+                    "value": "redis://redis:6379/0"
+                },
+                {
+                    "name": "DISABLE_SPRING",
+                    "value": "1"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/storedog",
+                    "awslogs-region": "ap-southeast-2",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
         }
-      ],
-      "essential": true, 
-      "command": ["wait-for-it","postgres:5432","--","bundle","exec","rails","s","-b","0.0.0.0","-p","4000"],
-      "environment": [
-        {"name": "POSTGRES_USER", "value": "postgres"},
-        {"name": "POSTGRES_PASSWORD", "value": "TYtSlJapmfN72hokCP6e"}, // Use Secrets Manager
-        {"name": "RAILS_ENV", "value": "development"}, 
-        {"name": "DB_HOST", "value": "postgres"}, 
-        {"name": "REDIS_URL", "value": "redis://redis:6379/0"}, 
-        {"name": "DISABLE_SPRING", "value": "1"}
-      ],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-create-group": "true",
-          "awslogs-group": "/ecs/storedog",
-          "awslogs-region": "ap-southeast-2",
-          "awslogs-stream-prefix": "ecs"
+    ],
+    "volumes": [
+        {
+            "name": "docker_sock",
+            "host": {
+                "sourcePath": "/var/run/docker.sock"
+            }
+        },
+        {
+            "name": "proc",
+            "host": {
+                "sourcePath": "/proc/"
+            }
+        },
+        {
+            "name": "cgroup",
+            "host": {
+                "sourcePath": "/sys/fs/cgroup/"
+            }
         }
-      }
-    },
-  
-  ],
-  "volumes": [ 
-    { "name": "docker_sock", "host": { "sourcePath": "/var/run/docker.sock"}},
-    { "name": "proc", "host": { "sourcePath": "/proc/"}},
-    { "name": "cgroup", "host": { "sourcePath": "/sys/fs/cgroup/"}}
-  ],
-  "placementConstraints": [],
-  "tags": []
+    ],
+    "placementConstraints": [],
+    "tags": []
 }
