@@ -26,7 +26,7 @@ phases:
       - echo "--- START OF BUILD PHASE ---"
       - echo "Initial working directory (should be services/frontend if buildspec path is correct):"
       - pwd  # PRINT WORKING DIRECTORY
-      - echo "Changing directory to services/frontend"
+      - echo "Changing directory to services/ads/python"
       - cd services/ads/python
       - echo "Current working directory (after cd, should be services/frontend):"
       - pwd
