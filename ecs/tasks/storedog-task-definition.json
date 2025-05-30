@@ -19,8 +19,7 @@
                     "name": "postgres-5432-tcp",
                     "containerPort": 5432,
                     "hostPort": 5432,
-                    "protocol": "tcp",
-                    "appProtocol": "none"
+                    "protocol": "tcp"
                 }
             ],
             "essential": true,
@@ -127,8 +126,7 @@
                     "name": "backend-4000-tcp",
                     "containerPort": 4000,
                     "hostPort": 4000,
-                    "protocol": "tcp",
-                    "appProtocol": "none"
+                    "protocol": "tcp"
                 }
             ],
             "essential": true,
