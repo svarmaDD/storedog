@@ -70,7 +70,7 @@
         "options": {
           "awslogs-create-group": "true",
           "awslogs-group": "/ecs/storedog",
-          "awslogs-region": "us-west-1",
+          "awslogs-region": "ap-southeast-2",
           "awslogs-stream-prefix": "ecs"
         },
         "secretOptions": []
@@ -100,7 +100,7 @@
         "options": {
           "awslogs-create-group": "true",
           "awslogs-group": "/ecs/storedog",
-          "awslogs-region": "us-west-1",
+          "awslogs-region": "ap-southeast-2",
           "awslogs-stream-prefix": "ecs"
         },
         "secretOptions": []
@@ -166,7 +166,7 @@
         "options": {
           "awslogs-create-group": "true",
           "awslogs-group": "/ecs/storedog",
-          "awslogs-region": "us-west-1",
+          "awslogs-region": "ap-southeast-2",
           "awslogs-stream-prefix": "ecs"
         },
         "secretOptions": []
@@ -197,7 +197,7 @@
         "options": {
           "awslogs-create-group": "true",
           "awslogs-group": "/ecs/storedog",
-          "awslogs-region": "us-west-1",
+          "awslogs-region": "ap-southeast-2",
           "awslogs-stream-prefix": "ecs"
         },
         "secretOptions": []
@@ -262,7 +262,7 @@
         "options": {
           "awslogs-create-group": "true",
           "awslogs-group": "/ecs/storedog",
-          "awslogs-region": "us-west-1",
+          "awslogs-region": "ap-southeast-2",
           "awslogs-stream-prefix": "ecs"
         },
         "secretOptions": []
@@ -356,7 +356,7 @@
         "options": {
           "awslogs-create-group": "true",
           "awslogs-group": "/ecs/storedog",
-          "awslogs-region": "us-west-1",
+          "awslogs-region": "ap-southeast-2",
           "awslogs-stream-prefix": "ecs"
         },
         "secretOptions": []
@@ -461,7 +461,7 @@
         "options": {
           "awslogs-create-group": "true",
           "awslogs-group": "/ecs/storedog",
-          "awslogs-region": "us-west-1",
+          "awslogs-region": "ap-southeast-2",
           "awslogs-stream-prefix": "ecs"
         },
         "secretOptions": []
@@ -499,7 +499,7 @@
         "options": {
           "awslogs-create-group": "true",
           "awslogs-group": "/ecs/storedog",
-          "awslogs-region": "us-west-1",
+          "awslogs-region": "ap-southeast-2",
           "awslogs-stream-prefix": "ecs"
         },
         "secretOptions": []
