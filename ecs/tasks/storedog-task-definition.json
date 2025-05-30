@@ -1,14 +1,12 @@
 {
-  "family": "storedog-app-task", // CHOOSE ONE FAMILY NAME
+  "family": "storedog-app-task", 
   "networkMode": "bridge",
-  "executionRoleArn": "arn:aws:iam::YOUR_AWS_ACCOUNT_ID:role/ecsTaskExecutionRole", // <-- USE FULL ARN AND ENSURE THIS ROLE EXISTS
-  // "taskRoleArn": "OPTIONAL_IF_YOUR_APP_NEEDS_AWS_PERMISSIONS",
+  "executionRoleArn": "arn:aws:iam::601427279990:role/ecsTaskExecutionRole", 
   "requiresCompatibilities": ["EC2"],
-  "cpu": "3072",                 // These are task-level CPU/Memory
-  "memory": "10240",               // Ensure this matches your instance capacity
+  "cpu": "3072",                 
+  "memory": "10240",               
   "containerDefinitions": [
-    // --- YOUR POSTGRES CONTAINER DEFINITION ---
-    // Consider removing this if using RDS
+  
     {
       "name": "postgres",
       "image": "601427279990.dkr.ecr.ap-southeast-2.amazonaws.com/storedog/postgres",
@@ -33,7 +31,7 @@
         {"name": "DD_RUNTIME_METRICS_ENABLED", "value": "true"},
         {"name": "DD_SERVICE", "value": "storedog-db"},
         {"name": "DD_LOGS_INJECTION", "value": "true"},
-        {"name": "POSTGRES_PASSWORD", "value": "TYtSlJapmfN72hokCP6e"}, // Consider Secrets Manager
+        {"name": "POSTGRES_PASSWORD", "value": "TYtSlJapmfN72hokCP6e"}, 
         {"name": "DD_ENV", "value": "dev"},
         {"name": "DD_PROFILING_ENABLED", "value": "true"},
         {"name": "DD_DBM_PROPAGATION_MODE", "value": "full"}
@@ -48,26 +46,25 @@
           "awslogs-region": "ap-southeast-2",
           "awslogs-stream-prefix": "ecs"
         }
-        // "secretOptions": [] // secretOptions is usually for log driver secrets, not general app secrets
+     
       },
       "healthCheck": {
-        "command": ["CMD-SHELL", "echo \"healthy\""], // CMD-SHELL is often needed for simple echos
+        "command": ["CMD-SHELL", "echo \"healthy\""], 
         "interval": 60,
         "timeout": 10,
         "retries": 3
       }
-      // "systemControls": [] // Often not needed unless specific kernel params are required
+      // "systemControls": [] 
     },
-    // --- YOUR REDIS CONTAINER DEFINITION ---
-    // Consider removing this if using ElastiCache
+
     {
       "name": "redis",
       "image": "redis:6.2-alpine",
       "cpu": 512,
       "memory": 1024,
       "memoryReservation": 512,
-      "portMappings": [], // No host port needed if only accessed by other containers in the task
-      "essential": false, // If other services can function degraded without it, otherwise true
+      "portMappings": [], 
+      "essential": false, 
       "environment": [],
       // "environmentFiles": [],
       "mountPoints": [],
@@ -82,31 +79,31 @@
         }
       }
     },
-    // --- YOUR BACKEND CONTAINER DEFINITION ---
+ 
     {
       "name": "backend",
       "image": "601427279990.dkr.ecr.ap-southeast-2.amazonaws.com/storedog/backend",
       "cpu": 512,
       "memory": 1024,
       "memoryReservation": 512,
-      "links": ["postgres:postgres", "redis:redis"], // Adjust if removing postgres/redis containers
+      "links": ["postgres:postgres", "redis:redis"], 
       "portMappings": [
         {
           "name": "backend-4000-tcp",
           "containerPort": 4000,
-          "hostPort": 4000, // If directly exposed or for ALB target. Or 0 for dynamic.
+          "hostPort": 4000, 
           "protocol": "tcp",
           "appProtocol": "none"
         }
       ],
-      "essential": true, // Likely essential
+      "essential": true, 
       "command": ["wait-for-it","postgres:5432","--","bundle","exec","rails","s","-b","0.0.0.0","-p","4000"],
       "environment": [
         {"name": "POSTGRES_USER", "value": "postgres"},
         {"name": "POSTGRES_PASSWORD", "value": "TYtSlJapmfN72hokCP6e"}, // Use Secrets Manager
-        {"name": "RAILS_ENV", "value": "development"}, // Should be "production" for actual deployment
-        {"name": "DB_HOST", "value": "postgres"}, // If using linked postgres container. If RDS, use RDS endpoint.
-        {"name": "REDIS_URL", "value": "redis://redis:6379/0"}, // If using linked redis. If ElastiCache, use ElastiCache endpoint.
+        {"name": "RAILS_ENV", "value": "development"}, 
+        {"name": "DB_HOST", "value": "postgres"}, 
+        {"name": "REDIS_URL", "value": "redis://redis:6379/0"}, 
         {"name": "DISABLE_SPRING", "value": "1"}
       ],
       "logConfiguration": {
@@ -119,12 +116,9 @@
         }
       }
     },
-    // ... Other container definitions (ads-java, discounts, frontend, dd-agent, nginx) ...
-    // Ensure similar review for environment variables (especially secrets and service endpoints)
-    // and essential flags. Nginx will likely be essential and needs a hostPort for the ALB.
-    // Frontend command should be `npm run start` for production, not `dev`.
+  
   ],
-  "volumes": [ // These volumes are for dd-agent to access Docker socket and host info
+  "volumes": [ 
     { "name": "docker_sock", "host": { "sourcePath": "/var/run/docker.sock"}},
     { "name": "proc", "host": { "sourcePath": "/proc/"}},
     { "name": "cgroup", "host": { "sourcePath": "/sys/fs/cgroup/"}}
