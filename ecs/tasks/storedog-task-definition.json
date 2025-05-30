@@ -1,9 +1,10 @@
 {
   "taskDefinitionArn": "<secret>",
+  "networkMode": "bridge",
   "containerDefinitions": [
     {
       "name": "postgres",
-      "image": "public.ecr.aws/x2b9z2t7/storedog/postgres:latest",
+      "image": "601427279990.dkr.ecr.ap-southeast-2.amazonaws.com/storedog/postgres",
       "cpu": 512,
       "memory": 1024,
       "memoryReservation": 512,
@@ -47,7 +48,7 @@
         },
         {
           "name": "POSTGRES_PASSWORD",
-          "value": "<secret>"
+          "value": "TYtSlJapmfN72hokCP6e"
         },
         {
           "name": "DD_ENV",
@@ -108,7 +109,7 @@
     },
     {
       "name": "backend",
-      "image": "public.ecr.aws/x2b9z2t7/storedog/backend:1.2.2",
+      "image": "601427279990.dkr.ecr.ap-southeast-2.amazonaws.com/storedog/backend",
       "cpu": 512,
       "memory": 1024,
       "memoryReservation": 512,
@@ -142,7 +143,7 @@
         },
         {
           "name": "POSTGRES_PASSWORD",
-          "value": "<secret>"
+          "value": "TYtSlJapmfN72hokCP6e"
         },
         {
           "name": "RAILS_ENV",
@@ -150,7 +151,7 @@
         },
         {
           "name": "DB_HOST",
-          "value": "postgres"
+          "value": "database-1"
         },
         {
           "name": "DISABLE_SPRING",
@@ -174,7 +175,7 @@
     },
     {
       "name": "ads-java",
-      "image": "public.ecr.aws/x2b9z2t7/storedog/ads-java:1.2.2",
+      "image": "601427279990.dkr.ecr.ap-southeast-2.amazonaws.com/storedog/ads",
       "cpu": 128,
       "memory": 1024,
       "memoryReservation": 512,
@@ -205,7 +206,7 @@
     },
     {
       "name": "discounts",
-      "image": "public.ecr.aws/x2b9z2t7/storedog/discounts:1.2.2",
+      "image": "601427279990.dkr.ecr.ap-southeast-2.amazonaws.com/storedog/discounts",
       "cpu": 128,
       "memory": 1024,
       "memoryReservation": 512,
@@ -240,11 +241,11 @@
         },
         {
           "name": "POSTGRES_PASSWORD",
-          "value": "<secret>"
+          "value": "TYtSlJapmfN72hokCP6e"
         },
         {
           "name": "POSTGRES_HOST",
-          "value": "postgres"
+          "value": "database-1.cxnwyymz1of0.ap-southeast-2.rds.amazonaws.com"
         }
       ],
       "environmentFiles": [],
@@ -270,7 +271,7 @@
     },
     {
       "name": "frontend",
-      "image": "public.ecr.aws/x2b9z2t7/storedog/frontend:1.2.2",
+      "image": "601427279990.dkr.ecr.ap-southeast-2.amazonaws.com/storedog/frontend",
       "cpu": 512,
       "memory": 1024,
       "memoryReservation": 512,
@@ -469,7 +470,7 @@
     },
     {
       "name": "nginx",
-      "image": "public.ecr.aws/x2b9z2t7/storedog/nginx:1.2.2",
+      "image": "601427279990.dkr.ecr.ap-southeast-2.amazonaws.com/storedog/nginx",
       "cpu": 128,
       "memory": 1024,
       "memoryReservation": 512,
